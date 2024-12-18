@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { TokenData, TokenTableProps } from '../types';
+import { TokenTableProps } from '../types';
 import { SystemStats } from './SystemStats';
 import { FundingGraph } from './FundingGraph';
 
@@ -79,11 +79,6 @@ const formatRate = (rate: number): string =>
 
 const RateValue = styled.span`
   color: var(--highlight-color);
-`;
-
-const Divider = styled.div`
-  border-top: 2px solid var(--border-color);
-  margin: 1rem 0;
 `;
 
 const DexInfo = styled.div`
