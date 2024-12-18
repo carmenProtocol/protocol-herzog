@@ -70,6 +70,11 @@ export const FundingTable: React.FC<TableProps> = ({ data = [], onSort }) => {
     onSort?.(col);
   };
 
+  const sortedData = [...data].sort((a, b) => {
+    const modifier = sortDirection === 'asc' ? 1 : -1;
+    return a[sortBy] > b[sortBy] ? modifier : -modifier;
+  });
+
   return (
     <TableContainer>
       <TableHeader>
@@ -86,7 +91,7 @@ export const FundingTable: React.FC<TableProps> = ({ data = [], onSort }) => {
           </tr>
         </thead>
         <tbody>
-          {data.map((item) => (
+          {sortedData.map((item) => (
             <tr key={item.id}>
               <td>{new Date(item.date).toLocaleDateString()}</td>
               <td>$ {item.amount.toFixed(2)}</td>

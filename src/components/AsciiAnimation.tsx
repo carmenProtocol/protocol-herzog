@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { AnimationProps } from '../types';
+import { AnimationProps, AnimationType } from '../types';
 
 const AnimationContainer = styled.pre`
   margin: 2rem 0;
@@ -8,7 +8,7 @@ const AnimationContainer = styled.pre`
   min-height: 100px;
 `;
 
-const animations: Record<AnimationProps, string[]> = {
+const animations: Record<AnimationType, string[]> = {
   deposit: [
     `[    ] Initializing deposit...`,
     `[=   ] Validating input...`,

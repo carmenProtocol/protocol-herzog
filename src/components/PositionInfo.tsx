@@ -18,36 +18,34 @@ interface Props {
 }
 
 export const PositionInfo: React.FC<Props> = ({ info }) => {
+  if (!info.token) return null; // Early return if no token
+
+  const formatNumber = (num: number | undefined) => {
+    return num?.toFixed(2) ?? '0.00';
+  };
+
   return (
-    <InfoContainer>
-      {`
-POSITION OPENED SUCCESSFULLY
-==========================
-
-Token: ${info.token.name}
-Price: ${formatUSD(info.token.price)}
-
-Position Details
---------------
-Total Value:     ${formatUSD(info.totalValueUSD)}
-Spot Position:   ${formatUSD(info.spotAmount)}  (80%)
-Perp Position:   ${formatUSD(info.perpAmount)}  (20%)
-Leveraged Size:  ${formatUSD(info.leveragedPerpAmount)}  (4x)
-Funding APR:     ${formatPercent(info.token.fundingRate.apr)}
-
-Projected Yield (from perp position)
---------------------------------
-Daily:           ${formatUSD(info.projectedYield.daily)}
-Weekly:          ${formatUSD(info.projectedYield.weekly)}
-Monthly:         ${formatUSD(info.projectedYield.monthly)}
-Yearly:          ${formatUSD(info.projectedYield.yearly)}
-
-Price Levels
------------
-Entry:           ${formatUSD(info.entryPrice)}
-Exit Target:     ${formatUSD(info.exitPrice)}     (+20%)
-Liquidation:     ${formatUSD(info.liquidationPrice)}     (+25%)
-      `}
-    </InfoContainer>
+    <div>
+      <div>Token: {info.token.name}</div>
+      <div>Price: ${info.token.price.toFixed(2)}</div>
+      
+      {/* Amounts */}
+      <div>Amount: {formatNumber(info.amount)}</div>
+      <div>Spot Amount: {formatNumber(info.spotAmount)}</div>
+      <div>Perp Amount: {formatNumber(info.perpAmount)}</div>
+      <div>Leveraged Amount: {formatNumber(info.leveragedPerpAmount)}</div>
+      <div>APR: {info.token.fundingRate.apr.toFixed(2)}%</div>
+      
+      {/* Projected Yield */}
+      <div>Daily Yield: {formatNumber(info.projectedYield?.daily)}</div>
+      <div>Weekly Yield: {formatNumber(info.projectedYield?.weekly)}</div>
+      <div>Monthly Yield: {formatNumber(info.projectedYield?.monthly)}</div>
+      <div>Yearly Yield: {formatNumber(info.projectedYield?.yearly)}</div>
+      
+      {/* Prices */}
+      <div>Entry Price: {formatNumber(info.entryPrice)}</div>
+      <div>Exit Price: {formatNumber(info.exitPrice)}</div>
+      <div>Liquidation Price: {formatNumber(info.liquidationPrice)}</div>
+    </div>
   );
 }; 
