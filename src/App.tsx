@@ -22,6 +22,10 @@ const AppContainer = styled.div`
   max-width: var(--measure);
   padding: 0 1rem;
   flex: 1;
+  
+  @media (max-width: 768px) {
+    padding: 0 0.5rem;
+  }
 `;
 
 const MainContent = styled.main`
@@ -95,6 +99,7 @@ function App() {
               <DepositForm
                 token={selectedToken}
                 onSubmit={handleDeposit}
+                presetAmounts={[100, 200, 300, 400, 500]}
               />
             )}
             {showAnimation && (
