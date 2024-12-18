@@ -142,7 +142,7 @@ export const TokenTable: React.FC<TokenTableProps> = ({ data, onSelect }) => {
           </tr>
         </thead>
         <tbody>
-          {data.map((token) => (
+          {data.map((token: TokenData) => (
             <tr key={token.id} onClick={() => onSelect(token)}>
               <td>{token.name.padEnd(6)}</td>
               <td>{formatPrice(token.price)}</td>

@@ -7,12 +7,6 @@ const InfoContainer = styled.pre`
   line-height: 1.5;
 `;
 
-const formatUSD = (value: number): string => 
-  `$${value.toFixed(2).padStart(12)}`;
-
-const formatPercent = (value: number): string => 
-  `${value.toFixed(2).padStart(8)}%`;
-
 interface Props {
   info: PositionInfoType;
 }
@@ -25,7 +19,7 @@ export const PositionInfo: React.FC<Props> = ({ info }) => {
   };
 
   return (
-    <div>
+    <InfoContainer>
       <div>Token: {info.token.name}</div>
       <div>Price: ${info.token.price.toFixed(2)}</div>
       
@@ -46,6 +40,6 @@ export const PositionInfo: React.FC<Props> = ({ info }) => {
       <div>Entry Price: {formatNumber(info.entryPrice)}</div>
       <div>Exit Price: {formatNumber(info.exitPrice)}</div>
       <div>Liquidation Price: {formatNumber(info.liquidationPrice)}</div>
-    </div>
+    </InfoContainer>
   );
 }; 

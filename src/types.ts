@@ -47,3 +47,14 @@ export interface TableProps {
   data: FundingData[];
   onSort?: (column: keyof FundingData) => void;
 }
+
+export interface TokenTableProps {
+  data: TokenData[];
+  onSelect: (token: TokenData) => void;
+}
+
+export interface DepositFormProps {
+  token: TokenData;
+  onSubmit: (amount: number) => Promise<void>;
+  presetAmounts?: number[];
+}

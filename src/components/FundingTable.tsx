@@ -57,7 +57,7 @@ const StatusIndicator = styled.span<{ status: FundingData['status'] }>`
 `;
 
 export const FundingTable: React.FC<TableProps> = ({ data = [], onSort }) => {
-  const [sortBy, setSortBy] = useState<keyof FundingData | null>(null);
+  const [sortBy, setSortBy] = useState<keyof FundingData | null>('date');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
 
   const sortColumn = (col: keyof FundingData) => {
@@ -71,6 +71,7 @@ export const FundingTable: React.FC<TableProps> = ({ data = [], onSort }) => {
   };
 
   const sortedData = [...data].sort((a, b) => {
+    if (!sortBy) return 0;
     const modifier = sortDirection === 'asc' ? 1 : -1;
     return a[sortBy] > b[sortBy] ? modifier : -modifier;
   });
