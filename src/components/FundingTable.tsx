@@ -56,7 +56,7 @@ const StatusIndicator = styled.span<{ status: FundingData['status'] }>`
   }}
 `;
 
-export const FundingTable: React.FC<TableProps> = ({ data, onSort }) => {
+export const FundingTable: React.FC<TableProps> = ({ data = [], onSort }) => {
   const [sortColumn, setSortColumn] = useState<keyof FundingData | null>(null);
   const [sortDirection, setSortDirection] = useState<'ascending' | 'descending'>('ascending');
 

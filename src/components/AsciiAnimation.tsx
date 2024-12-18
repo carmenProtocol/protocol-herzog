@@ -8,7 +8,7 @@ const AnimationContainer = styled.pre`
   min-height: 100px;
 `;
 
-const animations = {
+const animations: Record<AnimationProps, string[]> = {
   deposit: [
     `[    ] Initializing deposit...`,
     `[=   ] Validating input...`,

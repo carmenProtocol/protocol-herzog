@@ -4,22 +4,22 @@ export interface TokenData {
   price: number;
   fundingRate: {
     apr: number;
+    hourly?: number;
   };
 }
 
-export interface TokenTableProps {
-  data: TokenData[];
-  onSelect: (token: TokenData) => void;
-}
-
-export interface TableProps {
-  data?: any[];
+export interface PositionInfo {
+  token?: TokenData;
+  amount?: number;
 }
 
 export interface FundingData {
-  // ... поля для данных финансирования
+  status: string;
 }
 
-export interface TrendBarProps {
-  // ... props для компонента тренда
-} 
+export interface TableProps {
+  data: FundingData[];
+  onSort?: (column: string) => void;
+}
+
+export type AnimationProps = 'deposit' | 'position' | 'success'; 
