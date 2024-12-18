@@ -57,17 +57,17 @@ const StatusIndicator = styled.span<{ status: FundingData['status'] }>`
 `;
 
 export const FundingTable: React.FC<TableProps> = ({ data = [], onSort }) => {
-  const [sortColumn, setSortColumn] = useState<keyof FundingData | null>(null);
-  const [sortDirection, setSortDirection] = useState<'ascending' | 'descending'>('ascending');
+  const [sortBy, setSortBy] = useState<keyof FundingData | null>(null);
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
 
-  const handleSort = (column: keyof FundingData) => {
-    if (sortColumn === column) {
-      setSortDirection(sortDirection === 'ascending' ? 'descending' : 'ascending');
+  const sortColumn = (col: keyof FundingData) => {
+    if (sortBy === col) {
+      setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc');
     } else {
-      setSortColumn(column);
-      setSortDirection('ascending');
+      setSortBy(col);
+      setSortDirection('asc');
     }
-    onSort?.(column);
+    onSort?.(col);
   };
 
   return (
@@ -79,22 +79,10 @@ export const FundingTable: React.FC<TableProps> = ({ data = [], onSort }) => {
       <Table>
         <thead>
           <tr>
-            <th aria-sort={sortColumn === 'date' ? sortDirection : undefined}
-                onClick={() => handleSort('date')}>
-              Date
-            </th>
-            <th aria-sort={sortColumn === 'amount' ? sortDirection : undefined}
-                onClick={() => handleSort('amount')}>
-              Amount
-            </th>
-            <th aria-sort={sortColumn === 'status' ? sortDirection : undefined}
-                onClick={() => handleSort('status')}>
-              Status
-            </th>
-            <th aria-sort={sortColumn === 'description' ? sortDirection : undefined}
-                onClick={() => handleSort('description')}>
-              Description
-            </th>
+            <th onClick={() => sortColumn('date')}>Date</th>
+            <th onClick={() => sortColumn('amount')}>Amount</th>
+            <th onClick={() => sortColumn('status')}>Status</th>
+            <th onClick={() => sortColumn('description')}>Description</th>
           </tr>
         </thead>
         <tbody>

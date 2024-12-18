@@ -103,10 +103,7 @@ function App() {
               />
             )}
             {showAnimation && (
-              <AsciiAnimation 
-                type={showAnimation} 
-                isVisible={true}
-              />
+              <AsciiAnimation {...{ type: showAnimation, isVisible: true }} />
             )}
             {position && (
               <PositionInfo info={position} />
