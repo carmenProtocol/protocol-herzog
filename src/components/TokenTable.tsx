@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { TokenTableProps } from '../types';
+import { TokenData, TokenTableProps } from '../types';
 import { SystemStats } from './SystemStats';
 import { FundingGraph } from './FundingGraph';
 
