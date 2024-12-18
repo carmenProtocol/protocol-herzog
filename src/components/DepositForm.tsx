@@ -4,143 +4,156 @@ import { DepositFormProps } from '../types';
 
 const FormContainer = styled.div`
   margin: 2rem 0;
-  border-top: 1px solid var(--text-color);
-  padding-top: 2rem;
+  font-family: monospace;
 `;
 
-const FormHeader = styled.div`
-  font-size: 1rem;
-  white-space: pre;
+const Title = styled.div`
+  font-size: 1.2rem;
   margin-bottom: 2rem;
+  border-bottom: 1px solid #ffffff;
+  padding-bottom: 0.5rem;
 `;
 
-const InputGroup = styled.div`
+const Separator = styled.div`
+  border-bottom: 1px solid #333;
   margin: 1rem 0;
-  white-space: pre;
-  
-  input {
-    font-family: var(--font-mono);
-    background: none;
-    border: 1px solid var(--text-color);
-    color: var(--text-color);
-    padding: 0.5rem;
-    margin-left: 1rem;
-    width: 150px;
-  }
+  opacity: 0.5;
 `;
 
-const PresetAmounts = styled.div`
+const TokenInfo = styled.div`
   margin: 1rem 0;
-  white-space: pre;
-  
-  button {
-    font-family: var(--font-mono);
-    background: none;
-    border: none;
-    color: var(--text-color);
-    cursor: pointer;
-    padding: 0.5rem 1rem;
-    margin-right: 1rem;
-    
-    &:hover {
-      text-decoration: underline;
-    }
-  }
 `;
 
-const DistributionInfo = styled.pre`
+const InputContainer = styled.div`
   margin: 2rem 0;
+  
+  @media (max-width: 768px) {
+    margin: 1rem 0;
+  }
 `;
 
-const SubmitButton = styled.button`
-  font-family: var(--font-mono);
-  background: none;
-  border: 1px solid var(--border-color);
-  color: var(--text-color);
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  margin-top: 2rem;
+const Input = styled.input`
+  background: transparent;
+  border: 1px solid #333;
+  color: #fff;
+  padding: 0.5rem;
+  font-family: monospace;
+  font-size: 1rem;
+  width: 200px;
+  margin-left: 1rem;
   
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    &:hover {
-      background: none;
-      border-color: var(--border-color);
-      color: var(--text-color);
-    }
+  @media (max-width: 768px) {
+    width: 100%;
+    margin: 0.5rem 0 0 0;
+    display: block;
   }
+`;
+
+const SuggestedAmounts = styled.div`
+  margin: 1rem 0;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  
+  @media (max-width: 768px) {
+    gap: 0.5rem;
+  }
+`;
+
+const AmountButton = styled.button`
+  background: transparent;
+  border: 1px solid #333;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  font-family: monospace;
+  cursor: pointer;
+  transition: all 0.2s;
   
   &:hover {
-    background-color: var(--highlight-color);
-    color: var(--background-color);
-    border-color: var(--highlight-color);
+    border-color: #fff;
+  }
+  
+  @media (max-width: 768px) {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
   }
 `;
 
-const presetAmounts = [1000, 10000, 30000];
+const ConfirmButton = styled.button`
+  background: transparent;
+  border: 1px solid #fff;
+  color: #fff;
+  padding: 0.8rem 2rem;
+  font-family: monospace;
+  cursor: pointer;
+  margin-top: 2rem;
+  transition: all 0.2s;
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 0.6rem;
+  }
+`;
 
-export const DepositForm: React.FC<DepositFormProps> = ({ token, onSubmit }) => {
-  const [amount, setAmount] = useState<number>(0);
+const Label = styled.div`
+  margin-bottom: 0.5rem;
+  
+  @media (max-width: 768px) {
+    margin-bottom: 0;
+  }
+`;
 
-  if (!token) return null;
+export const DepositForm: React.FC<DepositFormProps> = ({
+  token,
+  onSubmit,
+  presetAmounts = [1000]
+}) => {
+  const [amount, setAmount] = useState<string>('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(amount);
+    const numAmount = parseFloat(amount);
+    if (!isNaN(numAmount)) {
+      await onSubmit(numAmount);
+    }
   };
-
-  const spotAmount = amount * 0.8;
-  const perpAmount = amount * 0.2;
-  const leveragedPerpAmount = perpAmount * 4;
 
   return (
     <FormContainer>
-      <FormHeader>
-        {`DEPOSIT CONFIGURATION
---------------------
-Selected token: ${token.name}`}
-      </FormHeader>
+      <Title>DEPOSIT CONFIGURATION</Title>
+      <Separator />
       
-      <form onSubmit={handleSubmit}>
-        <InputGroup>
-          Enter amount (USDC):{' '}
-          <input
-            type="number"
-            value={amount || ''}
-            onChange={(e) => setAmount(Number(e.target.value))}
-            min="0"
-            step="0.01"
-          />
-        </InputGroup>
+      <TokenInfo>Selected token: {token.name}</TokenInfo>
+      
+      <InputContainer>
+        <Label>Enter amount (USDC):</Label>
+        <Input
+          type="number"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          placeholder="0.00"
+        />
+      </InputContainer>
 
-        <PresetAmounts>
-          {`Suggested amounts:   `}
-          {presetAmounts.map((preset) => (
-            <button 
-              key={preset} 
-              type="button"
-              onClick={() => setAmount(preset)}
-            >
-              {`[ $${preset.toLocaleString()} ]`}
-            </button>
-          ))}
-        </PresetAmounts>
+      <Label>Suggested amounts:</Label>
+      <SuggestedAmounts>
+        {presetAmounts.map((preset) => (
+          <AmountButton
+            key={preset}
+            onClick={() => setAmount(preset.toString())}
+          >
+            [ ${preset.toLocaleString()} ]
+          </AmountButton>
+        ))}
+      </SuggestedAmounts>
 
-        {amount > 0 && (
-          <DistributionInfo>
-            {`Position Distribution:
---------------------
-Spot:      $${spotAmount.toFixed(2).padStart(10)} (80%)
-Perp:      $${perpAmount.toFixed(2).padStart(10)} (20%)
-Leveraged: $${leveragedPerpAmount.toFixed(2).padStart(10)} (4x)`}
-          </DistributionInfo>
-        )}
-
-        <SubmitButton type="submit" disabled={amount <= 0}>
-          [ CONFIRM DEPOSIT ]
-        </SubmitButton>
-      </form>
+      <ConfirmButton onClick={handleSubmit}>
+        [ CONFIRM DEPOSIT ]
+      </ConfirmButton>
     </FormContainer>
   );
 }; 
